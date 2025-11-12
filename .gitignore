@@ -1,3 +1,9 @@
+figs/
+
+scratch.qmd
+
+data/
+
 # History files
 .Rhistory
 .Rapp.history
