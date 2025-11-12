@@ -574,7 +574,7 @@ values_only %>%
 income_blackout_fig
 ```
 
-# 5. Outputs
+# 5. Final Outputs (Grade therse maps and plots)
 
 ## 5.1
 
@@ -612,6 +612,53 @@ nrow(homes_in_blackout) # 138,404
 a map of the census tracts in Houston that lost power
 
 ```{r}
+map_census <- tm_basemap("OpenStreetMap") +
+  tm_graticules() +
+  tm_shape(census_lvl_spatial, bbox = st_bbox(homes_blackout_yn)) +
+    tm_borders(col = "grey40") +
+    tm_polygons(
+      fill = "blackout_yn",
+      fill.scale = tm_scale(values = c("white", "black")),
+      fill.legend = tm_legend(
+        title = "Presence of blackout",
+        position = tm_pos_out("right")
+      )) +
+  tm_title("Census tracts that experienced any blackout")
+
+
+
+# ggsave(
+#   filename = "figs/census_blackout_fig.png",  # or .pdf / .tiff / .jpg
+#   plot = income_blackout_fig,width = 8, height = 6,dpi = 300
+# )
+
+map_census_pct <- tm_basemap("OpenStreetMap") +
+  tm_graticules() +
+  tm_shape(census_lvl_spatial, bbox = st_bbox(homes_blackout_yn)) +
+    tm_borders(col = "grey40") +
+    tm_polygons(
+      fill = "pct_blackout",
+      fill.legend = tm_legend(
+        title = "% Homes blacked out",
+        position = tm_pos_out("right")
+      )) +
+  tm_title("Percent of homes with blackout by census tract")
+
+
+
+# ggsave(
+#   filename = "figs/census_blackout_fig_pct.png",  # or .pdf / .tiff / .jpg
+#   plot = income_blackout_fig,width = 8, height = 6,dpi = 300
+# )
+
+combined_census <- tmap_arrange(map_census, map_census_pct,
+             ncol = 1)
+
+# ggsave(
+#   filename = "figs/census_blackout_fig_combined.png",  # or .pdf / .tiff / .jpg
+#   plot = income_blackout_fig,width = 8, height = 6,dpi = 300
+# )
+
 combined_census
 ```
 
